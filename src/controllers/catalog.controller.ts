@@ -5,6 +5,7 @@ import { Movie } from "../models/movie";
 
 class DatabaseController {
   public path = "/catalog";
+  public sizePath = "/length";
   public router = express.Router();
 
   constructor() {
@@ -13,6 +14,7 @@ class DatabaseController {
 
   public intializeRoutes() {
     this.router.get(this.path, this.getCatalog);
+    this.router.get(this.sizePath, this.getSize);
   }
 
   public async getCatalog(request: express.Request, response: express.Response) {
@@ -36,6 +38,27 @@ class DatabaseController {
         rows.push(tmp);
       }
       response.json(rows);
+    } catch (error) {
+      // tslint:disable-next-line:no-console
+      console.log("Something went wrong!", error);
+    } finally {
+      if (connection) {
+        // conn assignment worked, need to close
+        await connection.close();
+      }
+    }
+  }
+
+  public async getSize(request: express.Request, response: express.Response) {
+    let connection;
+    try {
+      connection = await oracledb.getConnection(environment.databaseConfig);
+      const result = await connection.execute(
+        `SELECT COUNT(1) FROM movies`
+      );
+      const count = (result.rows[0] as any)[0];
+      // tslint:disable-next-line:no-console
+      response.json(count);
     } catch (error) {
       // tslint:disable-next-line:no-console
       console.log("Something went wrong!", error);
