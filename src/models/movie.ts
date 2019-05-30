@@ -4,10 +4,10 @@ export class Movie {
   public duration: number;
   public releaseDate: Date;
   public movieAbstract: string;
-  public cover: Blob;
+  public cover: string;
 
   constructor(id: number, title: string, duration: number,
-              release: Date, abs: string, cover: Blob) {
+              release: Date, abs: string, cover: string) {
       this.movieId = id;
       this.movieTitle = title;
       this.duration = duration;

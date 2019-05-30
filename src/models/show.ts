@@ -13,7 +13,7 @@ export class Show {
   }
 
   public setMovie(id: number, title: string, duration: number, release: Date,
-                  abs: string, cover: Blob) {
+                  abs: string, cover: string) {
       this.movie = new Movie(id, title, duration, release, abs, cover);
   }
 }
